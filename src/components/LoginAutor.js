@@ -3,7 +3,7 @@ import { Form, Button, Card, Alert } from "react-bootstrap"
 import { useAuth } from "../contexts/AuthContext"
 import { Link, useHistory } from "react-router-dom"
 
-export default function Login() {
+export default function LoginAutor() {
   const emailRef = useRef()
   const passwordRef = useRef()
   const { login } = useAuth()
@@ -18,8 +18,9 @@ export default function Login() {
       setError("")
       setLoading(true)
       await login(emailRef.current.value, passwordRef.current.value)
-      history.push("/")
-    } catch {
+      history.push("/autor/")
+    } catch(e) {
+      //setError(e)
       setError("Failed to log in")
     }
 
@@ -30,7 +31,7 @@ export default function Login() {
     <>
       <Card>
         <Card.Body>
-          <h2 className="text-center mb-4">Log In</h2>
+          <h2 className="text-center mb-4">Log In Para Escritores</h2>
           {error && <Alert variant="danger">{error}</Alert>}
           <Form onSubmit={handleSubmit}>
             <Form.Group id="email">
@@ -46,12 +47,15 @@ export default function Login() {
             </Button>
           </Form>
           <div className="w-100 text-center mt-3">
-            <Link to="/forgot-password">Forgot Password?</Link>
+            <Link to="/forgot-password">Se te olvidó la contraseña?</Link>
           </div>
         </Card.Body>
       </Card>
       <div className="w-100 text-center mt-2">
-        Need an account? <Link to="/signup">Sign Up</Link>
+        Necesitas cuenta de escritor? <Link to="/signup-autor">Sign Up Aquí</Link>
+      </div>
+      <div className="w-100 text-center mt-2">
+        O quizá como acreditador? <Link to="/signup-acreditador">X acá el SignUp</Link>
       </div>
     </>
   )

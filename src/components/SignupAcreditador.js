@@ -19,7 +19,7 @@ export default function SignupAcreditador() {
     e.preventDefault()
 
     if (passwordRef.current.value !== passwordConfirmRef.current.value) {
-      return setError("Passwords do not match")
+      return setError("No coinciden las contraseñas")
     }
 
     try {
@@ -54,10 +54,6 @@ export default function SignupAcreditador() {
               <Form.Label>Email</Form.Label>
               <Form.Control type="email" ref={emailRef} required />
             </Form.Group>
-            {/* <Form.Group id="profession">
-              <Form.Label>Cual es su profesion?</Form.Label>
-              <Form.Control type="text" ref={professionRef} required />
-            </Form.Group> */}
             <div className="form-group">
               <div className="form-group">
                 <label>Area de conocimiento</label>

@@ -1,8 +1,8 @@
-import React, { useState, useRef, useEffect } from "react"
-import { Card, Button, Alert } from "react-bootstrap"
+import React, { useState, useRef } from "react"
+import { Card, Button } from "react-bootstrap"
 import { useAuth } from "../contexts/AuthContext"
 import { Link, useHistory } from "react-router-dom"
-import { auth, firestore } from "../firebase"
+import { firestore } from "../firebase"
 import { Table } from 'reactstrap';
 
 export default function DashboardAutor() {
@@ -36,7 +36,6 @@ export default function DashboardAutor() {
       aux_obj = item.data()
       setNoticias(current => [...current, aux_obj] )
     }
-    //console.log(this.noticias)
   }
 
   async function handleLogout() {

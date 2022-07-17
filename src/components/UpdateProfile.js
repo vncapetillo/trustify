@@ -15,7 +15,7 @@ export default function UpdateProfile() {
   function handleSubmit(e) {
     e.preventDefault()
     if (passwordRef.current.value !== passwordConfirmRef.current.value) {
-      return setError("Passwords do not match")
+      return setError("No coinciden las contraseñas")
     }
 
     const promises = []
@@ -34,7 +34,7 @@ export default function UpdateProfile() {
         history.push("/")
       })
       .catch(() => {
-        setError("Failed to update account")
+        setError("Algo salió mal")
       })
       .finally(() => {
         setLoading(false)
@@ -45,7 +45,7 @@ export default function UpdateProfile() {
     <>
       <Card>
         <Card.Body>
-          <h2 className="text-center mb-4">Update Profile</h2>
+          <h2 className="text-center mb-4">Actualizar Perfil</h2>
           {error && <Alert variant="danger">{error}</Alert>}
           <Form onSubmit={handleSubmit}>
             <Form.Group id="email">
@@ -62,7 +62,7 @@ export default function UpdateProfile() {
               <Form.Control
                 type="password"
                 ref={passwordRef}
-                placeholder="Leave blank to keep the same"
+                placeholder="Deje en blanco para mantener"
               />
             </Form.Group>
             <Form.Group id="password-confirm">
@@ -70,17 +70,17 @@ export default function UpdateProfile() {
               <Form.Control
                 type="password"
                 ref={passwordConfirmRef}
-                placeholder="Leave blank to keep the same"
+                placeholder="Deje en blanco para mantener"
               />
             </Form.Group>
             <Button disabled={loading} className="w-100" type="submit">
-              Update
+              Actualizar
             </Button>
           </Form>
         </Card.Body>
       </Card>
       <div className="w-100 text-center mt-2">
-        <Link to="/">Cancel</Link>
+        <Link to="/">Cancelar</Link>
       </div>
     </>
   )

@@ -18,7 +18,7 @@ export default function SignupAutor() {
     e.preventDefault()
 
     if (passwordRef.current.value !== passwordConfirmRef.current.value) {
-      return setError("Passwords do not match")
+      return setError("No coinciden las contraseñas")
     }
 
     try {

@@ -1,4 +1,3 @@
-import firebase from "firebase"
 import React, { useContext, useState, useEffect } from "react"
 import { auth, firestore } from "../firebase"
 

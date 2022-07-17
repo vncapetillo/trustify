@@ -1,16 +1,14 @@
-import React, { useState, useRef, useEffect } from "react"
-import ReactDOM from 'react-dom';
-import { Card, Button, Alert } from "react-bootstrap"
+import React, { useState } from "react"
+import { Button } from "react-bootstrap"
 import { useAuth } from "../contexts/AuthContext"
-import { Link, useHistory } from "react-router-dom"
-import { auth, firestore } from "../firebase"
-import { CardBody, Table } from 'reactstrap';
+import { useHistory } from "react-router-dom"
+import { firestore } from "../firebase"
+import { Table } from 'reactstrap';
 
 
 export default function DashboardAcreditador() {
   const [error, setError] = useState("")
   const [name, setName] = useState("")
-  const [open, setOpen] = useState(false)
   const [noticias, setNoticias] = useState([])
   const [noticiasUID, setNoticiasUID] = useState([])
   const [profesion, setProfesion] = useState("")
@@ -87,11 +85,6 @@ export default function DashboardAcreditador() {
 
   return (
     <>
-      {/* <div className="w-100 text-center mt-2">
-      <Button variant="link" onClick={getDataofAcreditador}>
-          Actualizar
-        </Button>
-      </div> */}
       <div className="w-100 text-center mt-2">
         <Button variant="link" onClick={handleLogout}>
           Log Out

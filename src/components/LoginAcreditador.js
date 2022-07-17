@@ -23,7 +23,6 @@ export default function LoginAcreditador() {
       //setError(e)
       setError("Failed to log in")
     }
-
     setLoading(false)
   }
 

@@ -8,13 +8,10 @@ import LoginAutor from "./LoginAutor"
 import LoginAcreditador from "./LoginAcreditador"
 import DashboardAutor from "./DashboardAutor"
 import DashboardAcreditador from "./DashboardAcreditador"
-//import Login from "./Login"
 import PrivateRoute from "./PrivateRoute"
 import ForgotPassword from "./ForgotPassword"
 import UpdateProfile from "./UpdateProfile"
 import Welcome from "./Welcome"
-//import Particles from "react-particles-js"
-//import LoginAcreditadores from "./LoginAcreditadores"
 
 function App() {
   return (
@@ -24,21 +21,19 @@ function App() {
           <PrivateRoute exact path="/autor/" component={DashboardAutor} />
           <PrivateRoute exact path="/acreditador/" component={DashboardAcreditador} />
           <Container className="d-flex align-items-center justify-content-center" style={{ minHeight: "100vh" }}>
-            <div className="w-100" style={{ maxWidth: "400px" }}>
-              <PrivateRoute path="/update-profile" component={UpdateProfile} />
-              <Route path="/forgot-password" component={ForgotPassword} />
-              <Route path="/signup-autor" component={SignupAutor} />
-              <Route path="/signup-acreditador" component={SignupAcreditador} />
-              <Route path="/login-autor" component={LoginAutor} />
-              <Route path="/login-acreditador" component={LoginAcreditador} />
-              <Route exact path="/" component={Welcome} />
-            </div>
+          <div className="w-100" style={{ maxWidth: "400px" }}>
+            <PrivateRoute path="/update-profile" component={UpdateProfile} />
+            <Route path="/forgot-password" component={ForgotPassword} />
+            <Route path="/signup-autor" component={SignupAutor} />
+            <Route path="/signup-acreditador" component={SignupAcreditador} />
+            <Route path="/login-autor" component={LoginAutor} />
+            <Route path="/login-acreditador" component={LoginAcreditador} />
+            <Route exact path="/" component={Welcome} />
+          </div>
           </Container>
         </Switch>
       </AuthProvider>
     </Router>
-    //   </div>
-    // </Container>
   )
 }
 

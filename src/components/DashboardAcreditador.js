@@ -1,36 +1,53 @@
 import React, { useState, useRef, useEffect } from "react"
+import ReactDOM from 'react-dom';
 import { Card, Button, Alert } from "react-bootstrap"
 import { useAuth } from "../contexts/AuthContext"
 import { Link, useHistory } from "react-router-dom"
 import { auth, firestore } from "../firebase"
 import { CardBody, Table } from 'reactstrap';
 
+
 export default function DashboardAcreditador() {
   const [error, setError] = useState("")
   const [name, setName] = useState("")
   const [open, setOpen] = useState(false)
-  const [noticias, setNoticias] = useState([{}])
+  const [noticias, setNoticias] = useState([])
+  const [noticiasUID, setNoticiasUID] = useState([])
   const [profesion, setProfesion] = useState("")
+  const [puntuacion, setPuntuacion] = useState(0)
   const { currentUser, logout, postPuntuacion } = useAuth()
   const history = useHistory()
-  const puntuacionRef = useRef()
 
-  async function getDataofAcreditador() {
-    firestore.collection("acreditadores").doc(`${currentUser.uid}`).get().then((userSnap) => {
-      setName(userSnap.data().name)
-      setProfesion(userSnap.data().profesion)
-    })
+
+  async function getDataofAcreditador() { 
+    console.log(currentUser.uid)
+    let data = await firestore.collection("acreditadores").doc(`${currentUser.uid}`).get()  
+    test(data)
+  }
+
+  function test(obj) {
+    setName(obj.data().name)
+    setProfesion(obj.data().profesion)
   }
 
   async function getNoticias() {
     setNoticias([])
+    setNoticiasUID([])
+
+    console.log(noticias, ", ", noticiasUID)
+
     const coll = firestore.collection("posts");
     const data = await coll.where('area_conocimiento', '==', profesion).get();
     for (let i = 0; i < data.docs.length; i++) {
       const item = data.docs[i];
-      var aux_obj = {}
-      aux_obj = item.data()
-      setNoticias(current => [...current, aux_obj] )
+      setNoticias(noticias => [
+        ...noticias,
+        item.data()
+      ])
+      setNoticiasUID(noticiasUID => [
+        ...noticiasUID,
+        item.id
+      ])
     }
   }
 
@@ -46,21 +63,35 @@ export default function DashboardAcreditador() {
   }
 
   async function handleSubmit(e) {
-    e.preventDefault()
-
+    //e.preventDefault()
+    var iidNoticia = e.target.value
+    
     try {
+      console.log("idNoticia: ", iidNoticia, ", UID: ", noticiasUID[iidNoticia], "puntuacion: ", puntuacion)
       setError("")
-      await postPuntuacion()
+      await postPuntuacion(noticiasUID[iidNoticia], puntuacion)
       history.push("/acreditador")
     } catch(e) {
       setError(e)
     }
   }
 
-  getDataofAcreditador()
+  const handleSelect = (e) => {
+    setPuntuacion(e.target.value)
+  }
+
+  const handleUp = () => {
+    getDataofAcreditador();
+    getNoticias()
+  }
 
   return (
     <>
+      {/* <div className="w-100 text-center mt-2">
+      <Button variant="link" onClick={getDataofAcreditador}>
+          Actualizar
+        </Button>
+      </div> */}
       <div className="w-100 text-center mt-2">
         <Button variant="link" onClick={handleLogout}>
           Log Out
@@ -71,25 +102,33 @@ export default function DashboardAcreditador() {
         Historias relacionadas con tu conocimiento:
       </h2>
       <div className="w-100 text-center">
-        <Button variant="" className="btn btn-primary mb-2 center" onClick={getNoticias}>
+        <Button variant="" className="btn btn-primary mb-2 center" onClick={handleUp}>
           Actualizar
         </Button>
       </div>
       <Table responsive hover>
         <thead>
           <tr>
+            <th>id</th>
             <th>Titulo</th>
+            <th>Fecha</th>
             <th>Noticia</th>
             <th>Area de Conocimiento</th>
             <th>Puntuacion</th>
           </tr>
         </thead>
         <tbody>
-          {noticias.map((noticia) => (
+          {noticias.map((noticia, index) => (
             <>
-              <tr>
+              <tr>                  
+                <td>  
+                  {index+1}
+                </td>
                 <td key={noticia.titulo}>
                   {noticia.titulo}
+                </td>
+                <td>
+                  {noticia.fecha}
                 </td>
                 <td width="500">
                   <div>
@@ -99,9 +138,9 @@ export default function DashboardAcreditador() {
                 <td key={noticia.area_conocimiento}>
                   {noticia.area_conocimiento}
                 </td>
-                <td key={noticia.puntuacion}>
-                  <select class="custom-select w-50 my-1 mr-sm-2" id="" ref={puntuacionRef}>
-                    <option selected>Escoger...</option>
+                <td key={noticia.titulo}>
+                  <select class="custom-select w-50 my-1 mr-sm-2"  key={noticia.titulo} value={puntuacion} onChange={handleSelect}>
+                    <option selected>{noticia.puntuacion}</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
@@ -113,7 +152,7 @@ export default function DashboardAcreditador() {
                     <option value="9">9</option>
                     <option value="10">10</option>
                   </select>
-                  <Button type="submit">
+                  <Button type="submit" value={index} onClick={handleSubmit}>
                     Ingresar
                   </Button>
                 </td>

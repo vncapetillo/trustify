@@ -27,11 +27,10 @@ export default function DashboardAutor() {
   }
   
   async function getNoticias() {
-    console.log("LOOOOOOP")
-    setNoticias([{}])
+    setNoticias([])
     const coll = firestore.collection("posts");
     const data = await coll.where('autor', '==', email).get();
-    for (let i = 0; i <= data.docs.length; i++) {
+    for (let i = 0; i < data.docs.length; i++) {
       const item = data.docs[i];
       var aux_obj = {}
       aux_obj = item.data()
@@ -45,7 +44,7 @@ export default function DashboardAutor() {
 
     try {
       await logout()
-      history.push("/")
+      history.push("/login-autor/")
     } catch {
       setError("Failed to log out")
     }
@@ -57,7 +56,7 @@ export default function DashboardAutor() {
     try {
       setError("")
       setLoading(true)
-      await uploadPost(email, name, lastname, tituloRef.current.value, noticiaRef.current.value, areaRef.current.value)
+      await uploadPost(email, tituloRef.current.value, noticiaRef.current.value, areaRef.current.value)
       await getNoticias()
       history.push("/autor/")
     } catch(e) {
@@ -75,7 +74,7 @@ export default function DashboardAutor() {
           <Card>
             <Card.Body>
               <div className="w-100 text-center mt-2">
-                <Button variant="link" onClick={handleLogout}>
+                <Button variant="link" className="mb-2"  onClick={handleLogout}>
                   Log Out
                 </Button>
               </div>
@@ -84,14 +83,9 @@ export default function DashboardAutor() {
               <strong>Datos:</strong><br />
               Nombre: {name} {lastname}<br />
               Email: {email}
-              <Link to="/update-profile" className="btn btn-primary center w-100 mt-3">
+              <Link to="/update-profile" className="btn btn-primary center w-100 mt-2 mb-2">
                 Actualizar perfil
               </Link>
-              <div className="w-100 text-center mt-2 mb-2">
-                <Button variant="link" onClick={handleLogout}>
-                  Log Out
-                </Button>
-              </div>
               <strong className="">Nueva noticia:</strong>
               <div className="form-group">
                 <input placeholder="Titulo" className="form-control mt-2 mb-3" id="titulo" ref={tituloRef}></input>
@@ -114,7 +108,12 @@ export default function DashboardAutor() {
           </Card>
         </div>
         <div className="col-xs-10 col-sm-7">
-          <h2 className="text-center mb-4">Tus historias</h2>
+          <h2 className="text-center mt-4 mb-2">Tus historias</h2>
+          <div className="text-center">
+            <Button className="w-40 mb-2" type="submit" onClick={getNoticias}>
+              Actualizar listado
+            </Button>
+          </div>
           <Table responsive hover>
             <thead>
               <tr>
@@ -132,8 +131,7 @@ export default function DashboardAutor() {
                       {noticia.titulo}
                     </td>
                     <td>
-                      {/* {new Date(noticia.fecha).toLocaleDateString("en-US")} */}
-                      {/* {console.log(noticia.fecha)} */}
+                      {noticia.fecha}
                     </td>
                     <td key={noticia.area_conocimiento}>
                       {noticia.area_conocimiento}

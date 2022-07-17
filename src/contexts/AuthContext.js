@@ -36,14 +36,18 @@ export function AuthProvider({ children }) {
     })
   }
 
-  function postPuntuacion(){
-    return null
+  function postPuntuacion(idNoticia, _puntuacion){
+    firestore.collection("posts").doc(idNoticia).update({
+      puntuacion: _puntuacion,
+    })
   }
 
-  function uploadPost(email, name, lastname, titulo, noticia, area_conocimiento) {
+  function uploadPost(email, titulo, noticia, area_conocimiento) {
+    let today = new Date()
+    let date = today.getDate() + "/" + parseInt(today.getMonth()+1) + "/" + today.getFullYear()
     firestore.collection("posts").add({
       autor: email,
-      fecha: firebase.firestore.FieldValue.serverTimestamp(),
+      fecha: date.toString(),
       titulo: titulo,
       texto: noticia,
       area_conocimiento: area_conocimiento

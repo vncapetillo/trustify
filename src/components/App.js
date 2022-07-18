@@ -14,6 +14,8 @@ import UpdateProfile from "./UpdateProfile"
 import Welcome from "./Welcome"
 
 function App() {
+  
+  //render de la APP
   return (
     <Router>
       <AuthProvider>

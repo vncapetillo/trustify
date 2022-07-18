@@ -1,17 +1,11 @@
-/**
- * Pantalla de bienvenida
- * Componentes de boostrap
- * link a login especifico
- */
-
 import React from "react"
-import { Button, Card } from "react-bootstrap"
+import { Card } from "react-bootstrap"
 import { Link } from "react-router-dom"
 
 export default function Welcome() {
 
   return (
-    <>
+    <div>
       <Card>
         <Card.Body>
           <h2 className="text-center mb-4">Welcome to <strong>TRUSTIFY!</strong></h2>
@@ -24,6 +18,9 @@ export default function Welcome() {
           </Link>
         </Card.Body>
       </Card>
-    </>
+    </div>
   )
 }
+
+
+

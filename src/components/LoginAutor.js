@@ -4,6 +4,16 @@ import { useAuth } from "../contexts/AuthContext"
 import { Link, useHistory } from "react-router-dom"
 
 export default function LoginAutor() {
+
+/**
+ * Uso de Hooks de react como:
+ * useRef: Para crear referencias a atributos del user
+ * UseState: hook para inicializar estados de error y carga
+ * useHistory: para saber dónde se encuentra actualmente el usuario
+ * 
+ * Uso de Hook personalizando
+ * AuthContext: funciones de loging y crud para el usuario
+ */
   const emailRef = useRef()
   const passwordRef = useRef()
   const { login } = useAuth()
@@ -11,19 +21,24 @@ export default function LoginAutor() {
   const [loading, setLoading] = useState(false)
   const history = useHistory()
 
+  //funcion que una vez apretado el boton del form espera el retorno del
+  //la funcion login del hook personalizado, si esta retorna el user entonces
+  //se considera logueado y pushea el path de author
   async function handleSubmit(e) {
     e.preventDefault()
 
     try {
       setError("")
+      //comienza a cargar
       setLoading(true)
       await login(emailRef.current.value, passwordRef.current.value)
       history.push("/autor/")
     } catch(e) {
+      //Caso contrario, tira el mensaje de error
       //setError(e)
       setError("Failed to log in")
     }
-
+    //se termina el loading
     setLoading(false)
   }
 

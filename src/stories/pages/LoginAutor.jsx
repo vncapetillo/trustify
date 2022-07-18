@@ -1,19 +1,11 @@
 import React, { useRef, useState } from "react"
 import { Form, Button, Card, Alert } from "react-bootstrap"
-import { useAuth } from "../contexts/AuthContext"
+import { useAuth } from "../../contexts/AuthContext"
 import { Link, useHistory } from "react-router-dom"
+import "bootstrap/dist/css/bootstrap.min.css"
 
-export default function LoginAcreditador() {
 
-  /**
- * Uso de Hooks de react como:
- * useRef: Para crear referencias a atributos del user
- * UseState: hook para inicializar estados de error y carga
- * useHistory: para saber dónde se encuentra y enviar al usuario acreditador
- * 
- * Uso de Hook personalizando
- * AuthContext: funciones de loging y crud para el usuario acreditador
- */
+export default function LoginAutor() {
   const emailRef = useRef()
   const passwordRef = useRef()
   const { login } = useAuth()
@@ -21,21 +13,19 @@ export default function LoginAcreditador() {
   const [loading, setLoading] = useState(false)
   const history = useHistory()
 
-  //funcion que una vez apretado el boton del form espera el retorno del
-  //la funcion login del hook personalizado, si esta retorna el user entonces
-  //se considera logueado y pushea el path de acreditador 
   async function handleSubmit(e) {
-    //no se envien cosas default (vacias)
     e.preventDefault()
+
     try {
       setError("")
       setLoading(true)
       await login(emailRef.current.value, passwordRef.current.value)
-      history.push("/acreditador/")
+      history.push("/autor/")
     } catch(e) {
       //setError(e)
       setError("Failed to log in")
     }
+
     setLoading(false)
   }
 
@@ -43,7 +33,7 @@ export default function LoginAcreditador() {
     <>
       <Card>
         <Card.Body>
-          <h2 className="text-center mb-4">Log In Para Acreditadores</h2>
+          <h2 className="text-center mb-4">Log In Para Escritores</h2>
           {error && <Alert variant="danger">{error}</Alert>}
           <Form onSubmit={handleSubmit}>
             <Form.Group id="email">
@@ -51,7 +41,7 @@ export default function LoginAcreditador() {
               <Form.Control type="email" ref={emailRef} required />
             </Form.Group>
             <Form.Group id="password">
-              <Form.Label>Contraseña</Form.Label>
+              <Form.Label>Password</Form.Label>
               <Form.Control type="password" ref={passwordRef} required />
             </Form.Group>
             <Button disabled={loading} className="w-100" type="submit">
@@ -59,15 +49,15 @@ export default function LoginAcreditador() {
             </Button>
           </Form>
           <div className="w-100 text-center mt-3">
-            <Link to="/forgot-password">Forgot Password?</Link>
+            <Link to="/forgot-password">Se te olvidó la contraseña?</Link>
           </div>
         </Card.Body>
       </Card>
       <div className="w-100 text-center mt-2">
-        Necesitas cuenta? <Link to="/signup-acreditador">Sign Up acá</Link>
+        Necesitas cuenta de escritor? <Link to="/signup-autor">Sign Up Aquí</Link>
       </div>
       <div className="w-100 text-center mt-2">
-        O quizá cuenta de escritor? <Link to="/signup-autor">Sign Up acá</Link>
+        O quizá como acreditador? <Link to="/signup-acreditador">X acá el SignUp</Link>
       </div>
     </>
   )

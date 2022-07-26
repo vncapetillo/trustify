@@ -6,18 +6,23 @@ import { firestore } from "../firebase"
 import { Table } from 'reactstrap';
 
 export default function DashboardAutor() {
+  //setteo del estado de error
   const [error, setError] = useState("")
+  //setteo del name y otros atributos del user mostrado en el dashboard
   const [name, setName] = useState("")
   const [lastname, setLastname] = useState("")
   const [email, setEmail] = useState("")
   const [loading, setLoading] = useState(false)
   const [noticias, setNoticias] = useState([{}])
+  //hook personalizado
   const { currentUser, logout, uploadPost } = useAuth()
   const history = useHistory()
+  //referecias a noticias
   const noticiaRef = useRef()
   const tituloRef = useRef()
   const areaRef = useRef()
 
+  //funcion que obtiene los datos y atributos del usuario
   async function getDataofUser() {
     firestore.collection("users").doc(`${currentUser.uid}`).get().then((userSnap) => {
       setName(userSnap.data().name)
@@ -26,6 +31,8 @@ export default function DashboardAutor() {
     })
   }
   
+  //obtiene la data de los post de noticias del usuario autor,
+  //teniendo el total de noticias que este haya escrito
   async function getNoticias() {
     setNoticias([])
     const coll = firestore.collection("posts");
@@ -38,6 +45,7 @@ export default function DashboardAutor() {
     }
   }
 
+  //logout del usuario
   async function handleLogout() {
     setError("")
 
@@ -49,6 +57,9 @@ export default function DashboardAutor() {
     }
   }
 
+  //funcion que apretado el boton de subir noticia
+  //crea un nuevo post segun informacion provista
+  //en el dashboard
   async function handleSubmit(e) {
     e.preventDefault()
 
@@ -64,6 +75,7 @@ export default function DashboardAutor() {
     setLoading(false)
   }
 
+  //Se obtiene la informacion para mostrarla en el dashboard
   getDataofUser()
 
   return (

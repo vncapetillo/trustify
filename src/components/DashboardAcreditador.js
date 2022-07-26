@@ -7,27 +7,32 @@ import { Table } from 'reactstrap';
 
 
 export default function DashboardAcreditador() {
+  //setteo del estado de error
   const [error, setError] = useState("")
+  //setteo del name y otros atributos del user mostrado en el dashboard
   const [name, setName] = useState("")
   const [noticias, setNoticias] = useState([])
   const [noticiasUID, setNoticiasUID] = useState([])
   const [profesion, setProfesion] = useState("")
   const [puntuacion, setPuntuacion] = useState(0)
+  //hook personalizado
   const { currentUser, logout, postPuntuacion } = useAuth()
   const history = useHistory()
 
-
+  //funcion que obtiene los datos y atributos del usuario
   async function getDataofAcreditador() { 
     console.log(currentUser.uid)
     let data = await firestore.collection("acreditadores").doc(`${currentUser.uid}`).get()  
     test(data)
   }
-
+  //settea los atributos del usuario
   function test(obj) {
     setName(obj.data().name)
     setProfesion(obj.data().profesion)
   }
 
+  //se obtienen todas las noticias que el usuario 
+  //podria puntuar segun su area de conocimiento
   async function getNoticias() {
     setNoticias([])
     setNoticiasUID([])
@@ -49,6 +54,7 @@ export default function DashboardAcreditador() {
     }
   }
 
+  //logout
   async function handleLogout() {
     setError("")
 
@@ -60,6 +66,7 @@ export default function DashboardAcreditador() {
     }
   }
 
+  //se hace el update de la puntuacion de la noticia
   async function handleSubmit(e) {
     //e.preventDefault()
     var iidNoticia = e.target.value
@@ -74,10 +81,12 @@ export default function DashboardAcreditador() {
     }
   }
 
+  //se settea la punctuacion de la noticia
   const handleSelect = (e) => {
     setPuntuacion(e.target.value)
   }
 
+  //getter de la informacion del acreditador y de las noticias
   const handleUp = () => {
     getDataofAcreditador();
     getNoticias()
